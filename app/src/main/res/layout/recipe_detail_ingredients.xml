@@ -4,17 +4,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <TextView
+        style="@style/TextAppearance.AppCompat.Title"
+        android:padding="16dp"
+        android:text="@string/ingredients_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <TextView xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/card_detail"
-        style="?android:attr/textAppearanceLarge"
+        android:text="@string/ingredients_list"
+        android:id="@+id/textViewIngredientList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
         android:textIsSelectable="true"
-        tools:context=".RecipeDetailFragment" />
-
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        tools:context=".fragments.RecipeDetailFragmentIngredients" />
 
 </LinearLayout>

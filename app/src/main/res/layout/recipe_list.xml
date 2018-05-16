@@ -6,7 +6,8 @@
     android:name="com.videumcorp.com.baking.CardListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     android:paddingTop="8dp"
     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
     tools:context=".RecipeListActivity"
-    tools:listitem="@layout/recipe_card_item" />
+    tools:listitem="@layout/recipe_item_card" />
