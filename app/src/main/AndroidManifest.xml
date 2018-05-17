@@ -7,13 +7,13 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:fullBackupContent="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".RecipeListActivity"
@@ -27,8 +27,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:configChanges="orientation|screenSize"
             android:name=".RecipeDetailActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_card_detail"
             android:parentActivityName=".RecipeListActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -36,6 +36,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.videumcorp.com.baking.RecipeListActivity" />
         </activity>
+
+        <receiver android:name=".RecipeAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_app_widget_info" />
+        </receiver>
+        <service
+            android:name=".WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

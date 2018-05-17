@@ -62,18 +62,37 @@
             android:paddingTop="2dp"
             android:text="@string/description" />
 
-        <Button
-            android:id="@+id/buttonRecipeItemOpenRecipe"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/open_recipe"
-            android:textColor="?attr/colorAccent"
-            android:theme="@style/ButtonStyle" />
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonRecipeItemOpenRecipe"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/open_recipe"
+                android:textColor="?attr/colorAccent"
+                android:theme="@style/ButtonStyle" />
+
+            <ImageButton
+                android:foreground="?selectableItemBackgroundBorderless"
+                android:id="@+id/buttonRecipeItemWidget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/widget_button"
+                android:padding="12dp"
+                android:src="@drawable/ic_outline_widgets_24px"
+                android:tint="@color/colorAccent" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

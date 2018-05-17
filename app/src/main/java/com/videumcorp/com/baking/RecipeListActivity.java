@@ -1,7 +1,10 @@
 package com.videumcorp.com.baking;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +17,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,6 +54,7 @@ public class RecipeListActivity extends AppCompatActivity {
     public static final String FRAGMENT_INGREDIENT = "fragment_INGREDIENT";
     public static final String FRAGMENT_STEPS = "fragment_STEPS";
     public static final String SELECTED_STEP = "selected_step";
+    public static final String SELECTED_WIDGET = "selected_widget";
 
     private boolean mTwoPane;
     private final List<RecipeItem> recipeItemArrayList = new ArrayList<>();
@@ -96,10 +100,8 @@ public class RecipeListActivity extends AppCompatActivity {
 
         if (!getResources().getBoolean(R.bool.isTablet)) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                Log.d("onConfigurationChanged", "landscape");
                 recyclerViewRecipeList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
             } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Log.d("onConfigurationChanged", "portrait");
                 recyclerViewRecipeList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             }
         }
@@ -113,7 +115,11 @@ public class RecipeListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        showHideRecipeDetailList();
+        if (frameLayoutRecipeList.getVisibility() == View.VISIBLE) {
+            finish();
+        } else {
+            showHideRecipeDetailList();
+        }
     }
 
     private void showHideRecipeDetailList() {
@@ -140,12 +146,16 @@ public class RecipeListActivity extends AppCompatActivity {
                     try {
                         this.response = response;
                         JSONArray jsonArrayAPIResponse = new JSONArray(response);
-                        //JSONObject jsonObjectAPIResponse = new JSONObject(response);
+
+                        SharedPreferences sharedPreferences = this.getSharedPreferences(RecipeListActivity.JSON, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(JSON, response);
+                        editor.apply();
+
                         Gson gson = new Gson();
                         for (int i = 0; i < jsonArrayAPIResponse.length(); i++) {
                             RecipeItem recipeItem = gson.fromJson(String.valueOf(jsonArrayAPIResponse.get(i)), RecipeItem.class);
                             recipeItemArrayList.add(recipeItem);
-                            Log.d("simpleVolleyRequest: ", recipeItem.getName());
                         }
 
                         assert recyclerViewRecipeList != null;
@@ -181,6 +191,8 @@ public class RecipeListActivity extends AppCompatActivity {
 
     public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder> {
 
+        ArrayList<ViewHolder> views = new ArrayList<>();
+
         RecipeRecyclerViewAdapter() {
         }
 
@@ -194,6 +206,7 @@ public class RecipeListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+            views.add(holder);
             holder.cardViewRecipeItem.setOnClickListener(v -> {
                 selectedItem = holder.getAdapterPosition();
                 recipeDetailRecyclerViewAdapter.notifyDataSetChanged();
@@ -215,6 +228,29 @@ public class RecipeListActivity extends AppCompatActivity {
                 recipeDetailRecyclerViewAdapter.notifyDataSetChanged();
                 showHideRecipeDetailList();
             });
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(RecipeListActivity.JSON, Context.MODE_PRIVATE);
+            if (sharedPreferences.getInt(SELECTED_WIDGET, 0) == position) {
+                holder.buttonRecipeItemWidget.setImageDrawable(getResources().getDrawable(R.drawable.ic_round_widgets_24px));
+            } else {
+                holder.buttonRecipeItemWidget.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_widgets_24px));
+            }
+            holder.buttonRecipeItemWidget.setOnClickListener(v -> {
+                for (int i = 0; i < views.size(); i++) {
+                    if (position == i) {
+                        views.get(i).buttonRecipeItemWidget.setImageDrawable(getResources().getDrawable(R.drawable.ic_round_widgets_24px));
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt(SELECTED_WIDGET, position);
+                        editor.apply();
+                    } else {
+                        views.get(i).buttonRecipeItemWidget.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_widgets_24px));
+                    }
+                }
+                Intent intent = new Intent(getApplicationContext(), RecipeAppWidget.class);
+                intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), RecipeAppWidget.class));
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                sendBroadcast(intent);
+            });
         }
 
         @Override
@@ -229,6 +265,8 @@ public class RecipeListActivity extends AppCompatActivity {
             TextView textViewRecipeItemName;
             @BindView(R.id.buttonRecipeItemOpenRecipe)
             AppCompatButton appCompatButtonRecipeItemOpenRecipe;
+            @BindView(R.id.buttonRecipeItemWidget)
+            ImageButton buttonRecipeItemWidget;
             @BindView(R.id.textViewRecipeItemNameDescription)
             TextView textViewRecipeItemNameDescription;
             @BindView(R.id.imageViewRecipeItemImage)

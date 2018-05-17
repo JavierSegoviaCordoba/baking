@@ -10,7 +10,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,8 +96,6 @@ public class RecipeDetailFragmentSteps extends Fragment {
 
                 selectedItem = (bundle.getInt(RecipeListActivity.SELECTED_ITEM));
                 selectedStep = (bundle.getInt(RecipeListActivity.SELECTED_STEP));
-
-                Log.d("onCreateView4", String.valueOf(selectedItem) + " " + String.valueOf(selectedStep) + " " + String.valueOf(recipeItemArrayList.get(selectedItem).getSteps().size()));
 
                 videoUrl = recipeItemArrayList.get(selectedItem).getSteps().get(selectedStep).getVideoURL();
                 shortDescription = recipeItemArrayList.get(selectedItem).getSteps().get(selectedStep).getShortDescription();
@@ -194,10 +191,8 @@ public class RecipeDetailFragmentSteps extends Fragment {
 
         if (!getResources().getBoolean(R.bool.isTablet)) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                Log.d("onConfigurationChanged", "landscape");
                 openFullscreenDialog();
             } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Log.d("onConfigurationChanged", "portrait");
                 closeFullscreenDialog();
             }
         }
