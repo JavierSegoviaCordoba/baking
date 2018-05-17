@@ -2,6 +2,7 @@ package com.videumcorp.com.baking;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -9,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -47,6 +50,7 @@ public class RecipeListActivity extends AppCompatActivity {
     public static final String FRAGMENT_TYPE = "fragment";
     public static final String FRAGMENT_INGREDIENT = "fragment_INGREDIENT";
     public static final String FRAGMENT_STEPS = "fragment_STEPS";
+    public static final String SELECTED_STEP = "selected_step";
 
     private boolean mTwoPane;
     private final List<RecipeItem> recipeItemArrayList = new ArrayList<>();
@@ -84,6 +88,21 @@ public class RecipeListActivity extends AppCompatActivity {
         }
 
         simpleVolleyRequest(getResources().getString(R.string.api_url));
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                Log.d("onConfigurationChanged", "landscape");
+                recyclerViewRecipeList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+            } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                Log.d("onConfigurationChanged", "portrait");
+                recyclerViewRecipeList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            }
+        }
     }
 
     @Override
@@ -149,6 +168,12 @@ public class RecipeListActivity extends AppCompatActivity {
         recipeDetailRecyclerViewAdapter = new RecipeDetailRecyclerViewAdapter(this, mTwoPane);
 
         recyclerView2.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+
+        if (mTwoPane) {
+            recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
+        } else {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        }
 
         recyclerView.setAdapter(recipeRecyclerViewAdapter);
         recyclerView2.setAdapter(recipeDetailRecyclerViewAdapter);
@@ -299,6 +324,7 @@ public class RecipeListActivity extends AppCompatActivity {
                                 arguments.putString(JSON, response);
                                 arguments.putInt(SELECTED_ITEM, selectedItem);
                                 arguments.putString(FRAGMENT_TYPE, FRAGMENT_STEPS);
+                                arguments.putInt(SELECTED_STEP, position - 1);
                                 RecipeDetailFragmentSteps fragment = new RecipeDetailFragmentSteps();
                                 fragment.setArguments(arguments);
                                 mParentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.card_detail_container, fragment).commit();
@@ -308,6 +334,7 @@ public class RecipeListActivity extends AppCompatActivity {
                                 intent.putExtra(JSON, response);
                                 intent.putExtra(SELECTED_ITEM, selectedItem);
                                 intent.putExtra(FRAGMENT_TYPE, FRAGMENT_STEPS);
+                                intent.putExtra(SELECTED_STEP, position - 1);
                                 context.startActivity(intent);
                             }
                         });

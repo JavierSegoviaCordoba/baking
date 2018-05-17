@@ -20,10 +20,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/recyclerViewRecipeDetailList"
         android:name="com.videumcorp.com.baking.CardListFragment"
-        android:layout_width="@dimen/item_width"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:paddingTop="16dp"
+        android:background="#EFEBE9"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:context="com.videumcorp.com.baking.RecipeListActivity"
         tools:listitem="@layout/recipe_item_steps" />

@@ -4,10 +4,13 @@
     android:id="@+id/cardViewRecipeIngredientItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="0dp"
+    android:layout_marginBottom="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp"
     android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@android:color/white">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,13 +32,13 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:foregroundGravity="right"
             android:text="@string/view"
             android:textColor="@android:color/white"
-            app:backgroundTint="?attr/colorAccent"
-            android:layout_marginEnd="8dp" />
+            app:backgroundTint="?attr/colorAccent" />
 
     </RelativeLayout>
 

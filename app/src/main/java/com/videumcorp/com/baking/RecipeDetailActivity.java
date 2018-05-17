@@ -1,6 +1,7 @@
 package com.videumcorp.com.baking;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,13 +12,21 @@ import com.videumcorp.com.baking.fragments.RecipeDetailFragmentSteps;
 
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RecipeDetailActivity extends AppCompatActivity {
+
+    @BindView(R.id.detail_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.app_bar)
+    AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
-        Toolbar toolbar = findViewById(R.id.detail_toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
         // Show the Up button in the action bar.
@@ -31,6 +40,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             arguments.putString(RecipeListActivity.JSON, getIntent().getStringExtra(RecipeListActivity.JSON));
             arguments.putInt(RecipeListActivity.SELECTED_ITEM, getIntent().getIntExtra(RecipeListActivity.SELECTED_ITEM, 0));
             arguments.putString(RecipeListActivity.FRAGMENT_TYPE, getIntent().getStringExtra(RecipeListActivity.FRAGMENT_TYPE));
+            arguments.putInt(RecipeListActivity.SELECTED_STEP, getIntent().getIntExtra(RecipeListActivity.SELECTED_STEP, 0));
             if (Objects.requireNonNull(arguments.getString(RecipeListActivity.FRAGMENT_TYPE)).equals(RecipeListActivity.FRAGMENT_INGREDIENT)) {
                 RecipeDetailFragmentIngredients fragment = new RecipeDetailFragmentIngredients();
                 fragment.setArguments(arguments);

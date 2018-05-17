@@ -12,4 +12,7 @@
     <string name="view">View</string>
     <string name="ingredients">ingredients</string>
     <string name="steps">steps</string>
+    <string name="short_description">Short description</string>
+    <string name="prev_step">Prev step</string>
+    <string name="next_step">Next step</string>
 </resources>

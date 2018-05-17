@@ -6,8 +6,9 @@
     android:name="com.videumcorp.com.baking.CardListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EFEBE9"
     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
     tools:context=".RecipeListActivity"
-    android:paddingTop="8dp"
+    android:paddingTop="16dp"
     android:clipToPadding="false"
-    tools:listitem="@layout/recipe_item_steps" />
+    tools:listitem="@layout/recipe_item_ingredients" />
