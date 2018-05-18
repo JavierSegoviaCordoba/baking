@@ -60,6 +60,8 @@ public class RecipeDetailFragmentSteps extends Fragment {
     @BindView(R.id.buttonNextStep)
     AppCompatButton buttonNextStep;
 
+    SimpleExoPlayer player;
+
     Dialog dialog;
 
     boolean playerViewFullscreen = false;
@@ -126,7 +128,7 @@ public class RecipeDetailFragmentSteps extends Fragment {
                     .Factory(bandwidthMeter);
             TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
-            SimpleExoPlayer player = ExoPlayerFactory
+            player = ExoPlayerFactory
                     .newSimpleInstance(view.getContext(), trackSelector);
 
             playerView.setPlayer(player);
@@ -225,10 +227,12 @@ public class RecipeDetailFragmentSteps extends Fragment {
         dialog.dismiss();
     }
 
-
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         recipeItemArrayList.clear();
+        if (player != null) {
+            player.release();
+        }
     }
 }
