@@ -28,10 +28,9 @@
         tools:context="com.videumcorp.com.baking.RecipeListActivity"
         tools:listitem="@layout/recipe_item_steps" />
 
-    <FrameLayout
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/card_detail_container"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

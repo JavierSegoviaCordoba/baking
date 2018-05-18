@@ -6,7 +6,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.videumcorp.com.baking.fragments.RecipeDetailFragmentIngredients;
 import com.videumcorp.com.baking.fragments.RecipeDetailFragmentSteps;
 
@@ -21,6 +23,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.app_bar)
     AppBarLayout appBarLayout;
+    @BindView(R.id.imageViewCover)
+    ImageView imageViewCover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        Glide.with(getApplicationContext())
+                .load(getResources().obtainTypedArray(R.array.images).getDrawable(getIntent().getIntExtra(RecipeListActivity.SELECTED_ITEM, 0)))
+                .into(imageViewCover);
 
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();

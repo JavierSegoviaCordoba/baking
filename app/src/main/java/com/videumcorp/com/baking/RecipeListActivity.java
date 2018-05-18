@@ -315,6 +315,15 @@ public class RecipeListActivity extends AppCompatActivity {
                 case INGREDIENTS:
                     if (holder.textViewRecipeIngredientItemIngredient != null) {
                         holder.textViewRecipeIngredientItemIngredient.setText(R.string.ingredients_list);
+                        if (mTwoPane) {
+                            Bundle arguments = new Bundle();
+                            arguments.putString(JSON, response);
+                            arguments.putInt(SELECTED_ITEM, selectedItem);
+                            arguments.putString(FRAGMENT_TYPE, FRAGMENT_INGREDIENT);
+                            RecipeDetailFragmentIngredients fragment = new RecipeDetailFragmentIngredients();
+                            fragment.setArguments(arguments);
+                            mParentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.card_detail_container, fragment).commit();
+                        }
                         holder.cardViewRecipeIngredientItem.setOnClickListener(v -> {
                             if (mTwoPane) {
                                 Bundle arguments = new Bundle();
