@@ -98,11 +98,16 @@ public class RecipeListActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+        LinearLayoutManager layoutManager = ((LinearLayoutManager) recyclerViewRecipeList.getLayoutManager());
+        int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+
         if (!getResources().getBoolean(R.bool.isTablet)) {
             if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 recyclerViewRecipeList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                recyclerViewRecipeList.scrollToPosition(firstVisiblePosition);
             } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 recyclerViewRecipeList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerViewRecipeList.scrollToPosition(firstVisiblePosition);
             }
         }
     }
